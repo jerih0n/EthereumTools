@@ -30,9 +30,10 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.mnemonic = new System.Windows.Forms.Panel();
+            this.ethBalance = new System.Windows.Forms.Label();
+            this.addressesComboBox = new System.Windows.Forms.ComboBox();
             this.ethereumAddress = new System.Windows.Forms.Label();
             this.addressLabel = new System.Windows.Forms.Label();
-            this.mnemonicImportButton = new System.Windows.Forms.Button();
             this.mnemonicPhrase = new System.Windows.Forms.Label();
             this.mnemonicLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -57,15 +58,36 @@
             this.mnemonic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mnemonic.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.mnemonic.Controls.Add(this.ethBalance);
+            this.mnemonic.Controls.Add(this.addressesComboBox);
             this.mnemonic.Controls.Add(this.ethereumAddress);
             this.mnemonic.Controls.Add(this.addressLabel);
-            this.mnemonic.Controls.Add(this.mnemonicImportButton);
             this.mnemonic.Controls.Add(this.mnemonicPhrase);
             this.mnemonic.Controls.Add(this.mnemonicLabel);
             this.mnemonic.Location = new System.Drawing.Point(3, 3);
             this.mnemonic.Name = "mnemonic";
             this.mnemonic.Size = new System.Drawing.Size(1181, 34);
             this.mnemonic.TabIndex = 0;
+            // 
+            // ethBalance
+            // 
+            this.ethBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ethBalance.AutoSize = true;
+            this.ethBalance.Location = new System.Drawing.Point(1022, 9);
+            this.ethBalance.Name = "ethBalance";
+            this.ethBalance.Size = new System.Drawing.Size(38, 15);
+            this.ethBalance.TabIndex = 8;
+            this.ethBalance.Text = "label1";
+            // 
+            // addressesComboBox
+            // 
+            this.addressesComboBox.FormattingEnabled = true;
+            this.addressesComboBox.Location = new System.Drawing.Point(679, 6);
+            this.addressesComboBox.Name = "addressesComboBox";
+            this.addressesComboBox.Size = new System.Drawing.Size(315, 23);
+            this.addressesComboBox.TabIndex = 7;
+            this.addressesComboBox.SelectedIndexChanged += new System.EventHandler(this.addressesComboBox_SelectedIndexChanged);
             // 
             // ethereumAddress
             // 
@@ -88,17 +110,6 @@
             this.addressLabel.Size = new System.Drawing.Size(59, 17);
             this.addressLabel.TabIndex = 4;
             this.addressLabel.Text = "Address:";
-            // 
-            // mnemonicImportButton
-            // 
-            this.mnemonicImportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.mnemonicImportButton.Location = new System.Drawing.Point(1090, 7);
-            this.mnemonicImportButton.Name = "mnemonicImportButton";
-            this.mnemonicImportButton.Size = new System.Drawing.Size(75, 23);
-            this.mnemonicImportButton.TabIndex = 2;
-            this.mnemonicImportButton.Text = "Import";
-            this.mnemonicImportButton.UseVisualStyleBackColor = true;
-            this.mnemonicImportButton.Click += new System.EventHandler(this.mnemonicImportButton_Click);
             // 
             // mnemonicPhrase
             // 
@@ -128,7 +139,7 @@
             this.ClientSize = new System.Drawing.Size(1211, 533);
             this.Controls.Add(this.panel1);
             this.Name = "Main";
-            this.Text = "Form1";
+            this.Text = "Ethereum Smart Contracts";
             this.panel1.ResumeLayout(false);
             this.mnemonic.ResumeLayout(false);
             this.mnemonic.PerformLayout();
@@ -142,8 +153,9 @@
         private Panel mnemonic;
         private Label mnemonicLabel;
         private Label mnemonicPhrase;
-        private Button mnemonicImportButton;
         private Label addressLabel;
         private Label ethereumAddress;
+        private ComboBox addressesComboBox;
+        private Label ethBalance;
     }
 }
