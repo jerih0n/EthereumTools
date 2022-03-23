@@ -12,8 +12,6 @@ namespace EthereumSmartContracts.App
 {
     public partial class Main : Form
     {
-        private const string SAMRT_CONTRACTS_LOCAL_FILE = "smartcontracts.json";
-
         private readonly HDWallet _hdWallet;
         private readonly BlockchainConnector _blockchainConnector;
         private string _selectedAddress = string.Empty;
@@ -38,6 +36,7 @@ namespace EthereumSmartContracts.App
             {
                 this.addressesComboBox.Items.Add(address);
             }
+            InitializeDataGrid();
         }
 
         private async void addressesComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -96,6 +95,31 @@ namespace EthereumSmartContracts.App
             else
             {
                 MessageBox.Show("Contract ABI and Address are mandatory!");
+            }
+        }
+
+        private void InitializeDataGrid()
+        {
+            this.smartContractsGrid.Rows.Clear();
+            foreach (var smartContract in _smartContractDbService.Data.SmartContracts)
+            {
+                this.smartContractsGrid.Rows.Add(smartContract.ContractName, smartContract.ContractAddress, "Select");
+            }
+        }
+
+        private void smartContractsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                var rowId = e.RowIndex;
+
+                var selectedSmartContract = _smartContractDbService.Data.SmartContracts[rowId];
+
+                //TODO: create interface for interactinf with the smartcontract!
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

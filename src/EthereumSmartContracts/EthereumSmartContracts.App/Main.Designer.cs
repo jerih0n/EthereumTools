@@ -36,6 +36,8 @@
             this.contractAddress = new System.Windows.Forms.TextBox();
             this.uploadABIBtn = new System.Windows.Forms.Button();
             this.smartContractsGrid = new System.Windows.Forms.DataGridView();
+            this.ContractName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mnemonic = new System.Windows.Forms.Panel();
             this.ethBalance = new System.Windows.Forms.Label();
             this.addressesComboBox = new System.Windows.Forms.ComboBox();
@@ -43,6 +45,7 @@
             this.addressLabel = new System.Windows.Forms.Label();
             this.mnemonicPhrase = new System.Windows.Forms.Label();
             this.mnemonicLabel = new System.Windows.Forms.Label();
+            this.Select = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -131,13 +134,29 @@
             // 
             this.smartContractsGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.smartContractsGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.smartContractsGrid.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             this.smartContractsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.smartContractsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ContractName,
+            this.Address,
+            this.Select});
             this.smartContractsGrid.Location = new System.Drawing.Point(-3, 57);
             this.smartContractsGrid.Name = "smartContractsGrid";
             this.smartContractsGrid.RowTemplate.Height = 25;
             this.smartContractsGrid.Size = new System.Drawing.Size(1172, 151);
             this.smartContractsGrid.TabIndex = 0;
+            this.smartContractsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.smartContractsGrid_CellContentClick);
+            // 
+            // ContractName
+            // 
+            this.ContractName.HeaderText = "Contract Name";
+            this.ContractName.Name = "ContractName";
+            // 
+            // Address
+            // 
+            this.Address.HeaderText = "Contract Address";
+            this.Address.Name = "Address";
             // 
             // mnemonic
             // 
@@ -218,6 +237,11 @@
             this.mnemonicLabel.TabIndex = 0;
             this.mnemonicLabel.Text = "Mnemonic:";
             // 
+            // Select
+            // 
+            this.Select.HeaderText = "Select";
+            this.Select.Name = "Select";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -248,11 +272,14 @@
         private ComboBox addressesComboBox;
         private Label ethBalance;
         private GroupBox groupBox1;
-        private DataGridView smartContractsGrid;
         private Panel panel2;
         private Button addNewContractBtn;
         private Label label1;
         private TextBox contractAddress;
         private Button uploadABIBtn;
+        private DataGridView smartContractsGrid;
+        private DataGridViewTextBoxColumn ContractName;
+        private DataGridViewTextBoxColumn Address;
+        private DataGridViewButtonColumn Select;
     }
 }

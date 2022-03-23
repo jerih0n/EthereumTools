@@ -56,7 +56,7 @@ namespace EthereumSmartContracts.App.SmartcontractDb.Service
             }
         }
 
-        public SmartContractsDbModel GetSmartContract
+        public SmartContractsDbModel Data
         { get { return _db; } }
     }
 }
