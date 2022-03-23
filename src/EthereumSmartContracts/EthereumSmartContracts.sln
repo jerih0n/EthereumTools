@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EthereumSmartContracts.App", "EthereumSmartContracts.App\EthereumSmartContracts.App.csproj", "{9CC4B77D-025C-4E1D-9DEA-CB30330217E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EthereumStamrtContracts.Logic", "EthereumStamrtContracts.Logic\EthereumStamrtContracts.Logic.csproj", "{A51BBD96-FDB1-4F21-B394-9B846685B03A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CC4B77D-025C-4E1D-9DEA-CB30330217E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CC4B77D-025C-4E1D-9DEA-CB30330217E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CC4B77D-025C-4E1D-9DEA-CB30330217E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CC4B77D-025C-4E1D-9DEA-CB30330217E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A51BBD96-FDB1-4F21-B394-9B846685B03A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51BBD96-FDB1-4F21-B394-9B846685B03A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A51BBD96-FDB1-4F21-B394-9B846685B03A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A51BBD96-FDB1-4F21-B394-9B846685B03A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29961566-C688-4160-986F-A24957478707}
+	EndGlobalSection
+EndGlobal
