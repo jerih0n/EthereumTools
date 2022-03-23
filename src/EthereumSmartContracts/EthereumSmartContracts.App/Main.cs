@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using EthereumStamrtContracts.Logic.SmartContracts;
 using EthereumSmartContracts.App.SmartcontractDb.Service;
 using EthereumSmartContracts.App.SmartcontractDb;
+using EthereumSmartContracts.App.UserInterfaceComponents;
 
 namespace EthereumSmartContracts.App
 {
@@ -44,6 +45,7 @@ namespace EthereumSmartContracts.App
             var currentIndex = this.addressesComboBox.SelectedIndex;
             _selectedAddress = _hdWallet.Addresses[currentIndex];
             _account = _hdWallet.GetAccountForAddress(_selectedAddress);
+            _blockchainConnector.UseAccount(_account);
             var ethBalance = await _blockchainConnector.GetEthBalance(_account.Address);
             this.ethBalance.Text = string.Format(_ethBalancePattern, ethBalance.NormalizeToDefaultDecimal().ToString());
         }
@@ -88,7 +90,8 @@ namespace EthereumSmartContracts.App
                 {
                     Abi = _newSmartContractBuildJson.Abi,
                     ContractAddress = this.contractAddress.Text,
-                    ContractName = _newSmartContractBuildJson.ContractName
+                    ContractName = _newSmartContractBuildJson.ContractName,
+                    ByteCode = _newSmartContractBuildJson.ByteCode,
                 };
                 _smartContractDbService.AddNewSmartContract(newContractRecord);
             }
@@ -109,13 +112,25 @@ namespace EthereumSmartContracts.App
 
         private void smartContractsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            this.smartcontracMethodsPanel.Controls.Clear();
             try
             {
                 var rowId = e.RowIndex;
 
                 var selectedSmartContract = _smartContractDbService.Data.SmartContracts[rowId];
 
-                //TODO: create interface for interactinf with the smartcontract!
+                foreach (var abiObj in selectedSmartContract.Abi)
+                {
+                    var functionCall = new SmartcontractMethodCall(abiObj,
+                        selectedSmartContract.ByteCode,
+                        selectedSmartContract.ContractAddress,
+                        _blockchainConnector);
+
+                    if (functionCall.ShouldDisplay)
+                    {
+                        this.smartcontracMethodsPanel.Controls.Add(functionCall);
+                    }
+                }
             }
             catch (Exception ex)
             {

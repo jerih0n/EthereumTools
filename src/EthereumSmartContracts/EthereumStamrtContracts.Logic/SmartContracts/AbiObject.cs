@@ -8,7 +8,7 @@ namespace EthereumStamrtContracts.Logic.SmartContracts
         public bool? Anonymous { get; set; }
 
         [JsonProperty("inputs")]
-        public List<AbiImputs> Imputs { get; set; } = new List<AbiImputs>();
+        public List<AbiImputs> Inputs { get; set; } = new List<AbiImputs>();
 
         [JsonProperty("stateMutability")]
         public string? StateMutability { get; set; }

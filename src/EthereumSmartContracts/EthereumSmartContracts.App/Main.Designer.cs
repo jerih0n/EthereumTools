@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.smartcontracMethodsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.addNewContractBtn = new System.Windows.Forms.Button();
@@ -38,6 +39,7 @@
             this.smartContractsGrid = new System.Windows.Forms.DataGridView();
             this.ContractName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Select = new System.Windows.Forms.DataGridViewButtonColumn();
             this.mnemonic = new System.Windows.Forms.Panel();
             this.ethBalance = new System.Windows.Forms.Label();
             this.addressesComboBox = new System.Windows.Forms.ComboBox();
@@ -45,7 +47,6 @@
             this.addressLabel = new System.Windows.Forms.Label();
             this.mnemonicPhrase = new System.Windows.Forms.Label();
             this.mnemonicLabel = new System.Windows.Forms.Label();
-            this.Select = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -60,12 +61,30 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.smartcontracMethodsPanel);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.mnemonic);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1187, 509);
             this.panel1.TabIndex = 0;
+            // 
+            // smartcontracMethodsPanel
+            // 
+            this.smartcontracMethodsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.smartcontracMethodsPanel.AutoScroll = true;
+            this.smartcontracMethodsPanel.ColumnCount = 1;
+            this.smartcontracMethodsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.smartcontracMethodsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.smartcontracMethodsPanel.Location = new System.Drawing.Point(6, 282);
+            this.smartcontracMethodsPanel.Name = "smartcontracMethodsPanel";
+            this.smartcontracMethodsPanel.RowCount = 2;
+            this.smartcontracMethodsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.smartcontracMethodsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.smartcontracMethodsPanel.Size = new System.Drawing.Size(1169, 212);
+            this.smartcontracMethodsPanel.TabIndex = 2;
             // 
             // groupBox1
             // 
@@ -75,7 +94,7 @@
             this.groupBox1.Controls.Add(this.smartContractsGrid);
             this.groupBox1.Location = new System.Drawing.Point(6, 43);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1178, 214);
+            this.groupBox1.Size = new System.Drawing.Size(1178, 200);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Smart Contracts";
@@ -144,7 +163,7 @@
             this.smartContractsGrid.Location = new System.Drawing.Point(-3, 57);
             this.smartContractsGrid.Name = "smartContractsGrid";
             this.smartContractsGrid.RowTemplate.Height = 25;
-            this.smartContractsGrid.Size = new System.Drawing.Size(1172, 151);
+            this.smartContractsGrid.Size = new System.Drawing.Size(1172, 137);
             this.smartContractsGrid.TabIndex = 0;
             this.smartContractsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.smartContractsGrid_CellContentClick);
             // 
@@ -157,6 +176,11 @@
             // 
             this.Address.HeaderText = "Contract Address";
             this.Address.Name = "Address";
+            // 
+            // Select
+            // 
+            this.Select.HeaderText = "Select";
+            this.Select.Name = "Select";
             // 
             // mnemonic
             // 
@@ -237,11 +261,6 @@
             this.mnemonicLabel.TabIndex = 0;
             this.mnemonicLabel.Text = "Mnemonic:";
             // 
-            // Select
-            // 
-            this.Select.HeaderText = "Select";
-            this.Select.Name = "Select";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -281,5 +300,6 @@
         private DataGridViewTextBoxColumn ContractName;
         private DataGridViewTextBoxColumn Address;
         private DataGridViewButtonColumn Select;
+        private TableLayoutPanel smartcontracMethodsPanel;
     }
 }

@@ -25,10 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\EthereumStamrtContracts.Logic\EthereumStamrtContracts.Logic.csproj" />
   </ItemGroup>
 
