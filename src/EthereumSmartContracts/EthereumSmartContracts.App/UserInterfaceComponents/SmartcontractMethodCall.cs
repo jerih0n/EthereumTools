@@ -1,5 +1,6 @@
 ﻿using EthereumStamrtContracts.Logic.Blockchain;
 using EthereumStamrtContracts.Logic.SmartContracts;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Text;
 
@@ -38,14 +39,14 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private readonly AbiObject _abiObject;
         private bool _shouldDisplay = false;
         private bool _triggersTransaction = false;
-        private readonly string _byteCode;
+        private readonly string _fullContractAbi;
         private readonly string _address;
         private readonly BlockchainConnector _blockchainConnector;
 
-        public SmartcontractMethodCall(AbiObject abiObject, string byteCode, string address, BlockchainConnector blockchainConnector)
+        public SmartcontractMethodCall(AbiObject abiObject, string fullContractAbi, string address, BlockchainConnector blockchainConnector)
         {
             InitializeComponent();
-            _byteCode = byteCode;
+            _fullContractAbi = fullContractAbi;
             _address = address;
             _abiObject = abiObject;
             _blockchainConnector = blockchainConnector;
@@ -62,7 +63,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             if (!_triggersTransaction)
             {
                 //TODO
-                var result = _blockchainConnector.CallNonTransactionResultingFunction(_byteCode, _address, this.callFunctionBtn.Text, null);
+                var result = _blockchainConnector.CallNonTransactionResultingFunction(_fullContractAbi, _address, this.callFunctionBtn.Text, null);
             }
         }
 

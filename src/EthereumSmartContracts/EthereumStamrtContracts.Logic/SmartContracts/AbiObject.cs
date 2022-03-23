@@ -10,6 +10,9 @@ namespace EthereumStamrtContracts.Logic.SmartContracts
         [JsonProperty("inputs")]
         public List<AbiImputs> Inputs { get; set; } = new List<AbiImputs>();
 
+        [JsonProperty("inputs")]
+        public List<AbiInputsWithComponents> InputsWithComponents { get; set; } = new List<AbiInputsWithComponents>();
+
         [JsonProperty("stateMutability")]
         public string? StateMutability { get; set; }
 
@@ -21,5 +24,8 @@ namespace EthereumStamrtContracts.Logic.SmartContracts
 
         [JsonProperty("internalType")]
         public string InternalType { get; set; }
+
+        [JsonProperty("outputs")]
+        public List<AbiAuthputs> Outputs { get; set; } = new List<AbiAuthputs>();
     }
 }

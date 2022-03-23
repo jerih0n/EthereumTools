@@ -113,16 +113,18 @@ namespace EthereumSmartContracts.App
         private void smartContractsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             this.smartcontracMethodsPanel.Controls.Clear();
+
             try
             {
                 var rowId = e.RowIndex;
 
                 var selectedSmartContract = _smartContractDbService.Data.SmartContracts[rowId];
+                var contractAbi = JsonConvert.SerializeObject(selectedSmartContract.Abi, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
                 foreach (var abiObj in selectedSmartContract.Abi)
                 {
                     var functionCall = new SmartcontractMethodCall(abiObj,
-                        selectedSmartContract.ByteCode,
+                        contractAbi,
                         selectedSmartContract.ContractAddress,
                         _blockchainConnector);
 

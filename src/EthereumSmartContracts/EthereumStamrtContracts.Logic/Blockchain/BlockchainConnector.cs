@@ -1,4 +1,5 @@
 ﻿using EthereumStamrtContracts.Logic.Configuration.Models;
+using Nethereum.Contracts;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
 using System.Numerics;
