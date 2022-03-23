@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.addNewContractBtn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.contractAddress = new System.Windows.Forms.TextBox();
+            this.uploadABIBtn = new System.Windows.Forms.Button();
+            this.smartContractsGrid = new System.Windows.Forms.DataGridView();
             this.mnemonic = new System.Windows.Forms.Panel();
             this.ethBalance = new System.Windows.Forms.Label();
             this.addressesComboBox = new System.Windows.Forms.ComboBox();
@@ -37,6 +44,9 @@
             this.mnemonicPhrase = new System.Windows.Forms.Label();
             this.mnemonicLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.smartContractsGrid)).BeginInit();
             this.mnemonic.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,11 +57,87 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.mnemonic);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1187, 509);
             this.panel1.TabIndex = 0;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.panel2);
+            this.groupBox1.Controls.Add(this.smartContractsGrid);
+            this.groupBox1.Location = new System.Drawing.Point(6, 43);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1178, 214);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Smart Contracts";
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.addNewContractBtn);
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.contractAddress);
+            this.panel2.Controls.Add(this.uploadABIBtn);
+            this.panel2.Location = new System.Drawing.Point(6, 22);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1166, 29);
+            this.panel2.TabIndex = 1;
+            // 
+            // addNewContractBtn
+            // 
+            this.addNewContractBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addNewContractBtn.Location = new System.Drawing.Point(947, 3);
+            this.addNewContractBtn.Name = "addNewContractBtn";
+            this.addNewContractBtn.Size = new System.Drawing.Size(216, 23);
+            this.addNewContractBtn.TabIndex = 3;
+            this.addNewContractBtn.Text = "Save Contract";
+            this.addNewContractBtn.UseVisualStyleBackColor = true;
+            this.addNewContractBtn.Click += new System.EventHandler(this.addNewContractBtn_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(98, 15);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Contract Address";
+            // 
+            // contractAddress
+            // 
+            this.contractAddress.Location = new System.Drawing.Point(107, 3);
+            this.contractAddress.Name = "contractAddress";
+            this.contractAddress.Size = new System.Drawing.Size(331, 23);
+            this.contractAddress.TabIndex = 1;
+            // 
+            // uploadABIBtn
+            // 
+            this.uploadABIBtn.Location = new System.Drawing.Point(459, 3);
+            this.uploadABIBtn.Name = "uploadABIBtn";
+            this.uploadABIBtn.Size = new System.Drawing.Size(134, 23);
+            this.uploadABIBtn.TabIndex = 0;
+            this.uploadABIBtn.Text = "Upload Build";
+            this.uploadABIBtn.UseVisualStyleBackColor = true;
+            this.uploadABIBtn.Click += new System.EventHandler(this.uploadABIBtn_Click);
+            // 
+            // smartContractsGrid
+            // 
+            this.smartContractsGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.smartContractsGrid.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.smartContractsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.smartContractsGrid.Location = new System.Drawing.Point(-3, 57);
+            this.smartContractsGrid.Name = "smartContractsGrid";
+            this.smartContractsGrid.RowTemplate.Height = 25;
+            this.smartContractsGrid.Size = new System.Drawing.Size(1172, 151);
+            this.smartContractsGrid.TabIndex = 0;
             // 
             // mnemonic
             // 
@@ -76,12 +162,12 @@
             this.ethBalance.AutoSize = true;
             this.ethBalance.Location = new System.Drawing.Point(1022, 9);
             this.ethBalance.Name = "ethBalance";
-            this.ethBalance.Size = new System.Drawing.Size(38, 15);
+            this.ethBalance.Size = new System.Drawing.Size(0, 15);
             this.ethBalance.TabIndex = 8;
-            this.ethBalance.Text = "label1";
             // 
             // addressesComboBox
             // 
+            this.addressesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.addressesComboBox.FormattingEnabled = true;
             this.addressesComboBox.Location = new System.Drawing.Point(679, 6);
             this.addressesComboBox.Name = "addressesComboBox";
@@ -141,6 +227,10 @@
             this.Name = "Main";
             this.Text = "Ethereum Smart Contracts";
             this.panel1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.smartContractsGrid)).EndInit();
             this.mnemonic.ResumeLayout(false);
             this.mnemonic.PerformLayout();
             this.ResumeLayout(false);
@@ -157,5 +247,12 @@
         private Label ethereumAddress;
         private ComboBox addressesComboBox;
         private Label ethBalance;
+        private GroupBox groupBox1;
+        private DataGridView smartContractsGrid;
+        private Panel panel2;
+        private Button addNewContractBtn;
+        private Label label1;
+        private TextBox contractAddress;
+        private Button uploadABIBtn;
     }
 }

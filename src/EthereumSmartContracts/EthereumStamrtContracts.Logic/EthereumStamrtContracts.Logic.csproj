@@ -11,4 +11,8 @@
     <PackageReference Include="Nethereum.Web3" Version="4.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SmartContracts\Logic\" />
+  </ItemGroup>
+
 </Project>
