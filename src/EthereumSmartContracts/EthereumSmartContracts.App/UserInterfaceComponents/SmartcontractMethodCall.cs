@@ -1,9 +1,6 @@
 ﻿using EthereumStamrtContracts.Logic.Blockchain;
 using EthereumStamrtContracts.Logic.SmartContracts;
-using EthereumStamrtContracts.Logic.Utils;
 using Newtonsoft.Json;
-using System.Linq;
-using System.Text;
 
 namespace EthereumSmartContracts.App.UserInterfaceComponents
 {
@@ -63,11 +60,18 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         {
             if (!_triggersTransaction)
             {
-                //TODO
-                this.result.Text = "Processing...";
-                var result = await _blockchainConnector.CallNonTransactionResultingFunction(JsonConvert.SerializeObject(_fullContractAbi), _address, this.callFunctionBtn.Text, null);
-                var resultAsJson = JsonConvert.SerializeObject(result);
-                this.result.Text = resultAsJson;
+                try
+                {
+                    //TODO
+                    this.result.Text = "Processing...";
+                    var result = await _blockchainConnector.CallNonTransactionResultingFunction(JsonConvert.SerializeObject(_fullContractAbi), _address, this.callFunctionBtn.Text, null);
+                    var resultAsJson = JsonConvert.SerializeObject(result);
+                    this.result.Text = resultAsJson;
+                }
+                catch (Exception ex)
+                {
+                    this.result.Text = $"Finished with Error: {ex.Message}";
+                }
             }
         }
 

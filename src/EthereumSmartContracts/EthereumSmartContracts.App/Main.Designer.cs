@@ -76,13 +76,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.smartcontracMethodsPanel.AutoScroll = true;
             this.smartcontracMethodsPanel.ColumnCount = 1;
-            this.smartcontracMethodsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.smartcontracMethodsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.smartcontracMethodsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.smartcontracMethodsPanel.Location = new System.Drawing.Point(6, 282);
             this.smartcontracMethodsPanel.Name = "smartcontracMethodsPanel";
-            this.smartcontracMethodsPanel.RowCount = 2;
-            this.smartcontracMethodsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.smartcontracMethodsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.smartcontracMethodsPanel.RowCount = 1;
+            this.smartcontracMethodsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.smartcontracMethodsPanel.Size = new System.Drawing.Size(1169, 212);
             this.smartcontracMethodsPanel.TabIndex = 2;
             // 
