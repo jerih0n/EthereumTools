@@ -64,7 +64,10 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             if (!_triggersTransaction)
             {
                 //TODO
-                var result = _blockchainConnector.CallNonTransactionResultingFunction(JsonConvert.SerializeObject(_fullContractAbi), _address, this.callFunctionBtn.Text, null);
+                this.result.Text = "Processing...";
+                var result = await _blockchainConnector.CallNonTransactionResultingFunction(JsonConvert.SerializeObject(_fullContractAbi), _address, this.callFunctionBtn.Text, null);
+                var resultAsJson = JsonConvert.SerializeObject(result);
+                this.result.Text = resultAsJson;
             }
         }
 

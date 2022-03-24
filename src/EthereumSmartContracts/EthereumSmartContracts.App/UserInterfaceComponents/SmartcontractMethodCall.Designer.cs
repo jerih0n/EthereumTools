@@ -56,7 +56,7 @@
             // 
             this.result.AutoSize = true;
             this.result.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.result.Location = new System.Drawing.Point(143, 32);
+            this.result.Location = new System.Drawing.Point(3, 32);
             this.result.Name = "result";
             this.result.Size = new System.Drawing.Size(38, 15);
             this.result.TabIndex = 2;
