@@ -2,7 +2,7 @@
 
 namespace EthereumStamrtContracts.Logic.SmartContracts
 {
-    public class AbiImputs
+    public class AbiInputs
     {
         [JsonProperty("indexed")]
         public bool Indexed { get; set; }

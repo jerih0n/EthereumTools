@@ -13,9 +13,11 @@ namespace EthereumSmartContracts.App.SmartcontractDb.Service
             _db = LoadDb();
         }
 
-        public void AddNewSmartContract(SmartContractModel smartContractModel)
+        public void AddNewSmartContract(string smartContractModel, string address)
         {
-            _db.SmartContracts.Add(smartContractModel);
+            var startContractPartialData = JsonConvert.DeserializeObject<SmartContractModel>(smartContractModel);
+            startContractPartialData.ContractAddress = address;
+            _db.SmartContracts.Add(startContractPartialData);
             SaveChanges();
         }
 

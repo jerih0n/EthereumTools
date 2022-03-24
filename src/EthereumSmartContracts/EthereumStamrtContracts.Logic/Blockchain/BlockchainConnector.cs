@@ -27,6 +27,7 @@ namespace EthereumStamrtContracts.Logic.Blockchain
         public void UseAccount(Account account)
         {
             _web3 = new Web3(account, NetworkUrl);
+            _web3.TransactionManager.UseLegacyAsDefault = true;
         }
 
         public async Task<BigInteger> GetEthBalance(string address)

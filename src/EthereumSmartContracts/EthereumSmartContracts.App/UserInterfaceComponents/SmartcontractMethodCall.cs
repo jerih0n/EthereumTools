@@ -1,5 +1,6 @@
 ﻿using EthereumStamrtContracts.Logic.Blockchain;
 using EthereumStamrtContracts.Logic.SmartContracts;
+using EthereumStamrtContracts.Logic.Utils;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Text;
@@ -36,23 +37,23 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
         #endregion Constants
 
-        private readonly AbiObject _abiObject;
         private bool _shouldDisplay = false;
         private bool _triggersTransaction = false;
-        private readonly string _fullContractAbi;
+        private readonly dynamic _fullContractAbi;
         private readonly string _address;
         private readonly BlockchainConnector _blockchainConnector;
+        private readonly AbiObject<AbiOuthputs> _abiInputs;
 
-        public SmartcontractMethodCall(AbiObject abiObject, string fullContractAbi, string address, BlockchainConnector blockchainConnector)
+        public SmartcontractMethodCall(dynamic abi, dynamic fullContractAbi, string address, BlockchainConnector blockchainConnector)
         {
             InitializeComponent();
             _fullContractAbi = fullContractAbi;
             _address = address;
-            _abiObject = abiObject;
             _blockchainConnector = blockchainConnector;
-            Initialize();
             Name = Guid.NewGuid().ToString();
-            this.result.Text = String.Empty;
+            this.result.Text = string.Empty;
+            _abiInputs = JsonConvert.DeserializeObject<AbiObject<AbiOuthputs>>(JsonConvert.SerializeObject(abi));
+            Initialize();
         }
 
         public bool ShouldDisplay
@@ -63,13 +64,13 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             if (!_triggersTransaction)
             {
                 //TODO
-                var result = _blockchainConnector.CallNonTransactionResultingFunction(_fullContractAbi, _address, this.callFunctionBtn.Text, null);
+                var result = _blockchainConnector.CallNonTransactionResultingFunction(JsonConvert.SerializeObject(_fullContractAbi), _address, this.callFunctionBtn.Text, null);
             }
         }
 
         private void Initialize()
         {
-            switch (_abiObject.Type)
+            switch (_abiInputs.Type)
             {
                 case FUNCTION:
                     InitializeFunction();
@@ -83,7 +84,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private void InitializeFunction()
         {
             _shouldDisplay = true;
-            switch (_abiObject.StateMutability)
+            switch (_abiInputs.StateMutability)
             {
                 case VIEW:
                     InitializeViewAndPureFunction();
@@ -101,14 +102,14 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
         private void InitializeViewAndPureFunction()
         {
-            this.callFunctionBtn.Text = _abiObject.Name;
+            this.callFunctionBtn.Text = _abiInputs.Name;
             this.callFunctionBtn.BackColor = Color.Green;
             CreateInput();
         }
 
         private void InitializePayableAndNonPayableFunction(Color color)
         {
-            this.callFunctionBtn.Text = _abiObject.Name;
+            this.callFunctionBtn.Text = _abiInputs.Name;
             this.callFunctionBtn.BackColor = color;
             _triggersTransaction = true;
             CreateInput();
@@ -116,14 +117,14 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
         private void CreateInput()
         {
-            if (_abiObject.Inputs == null || _abiObject.Inputs.Count == 0)
+            if (_abiInputs == null || _abiInputs.Inputs.Count == 0)
             {
                 this.parameterInputsTxtBox.Visible = false;
                 this.parameterInputsTxtBox.Enabled = false;
                 return;
             }
             var parameters = new List<string>();
-            foreach (var input in _abiObject.Inputs)
+            foreach (var input in _abiInputs.Inputs)
             {
                 parameters.Add($"{input.Type} {input.Name}");
             }

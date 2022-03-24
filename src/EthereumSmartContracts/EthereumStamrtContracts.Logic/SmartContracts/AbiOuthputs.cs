@@ -2,7 +2,7 @@
 
 namespace EthereumStamrtContracts.Logic.SmartContracts
 {
-    public class AbiAuthputs
+    public class AbiOuthputs
     {
         [JsonProperty("internalType")]
         public string InternalType { get; set; }

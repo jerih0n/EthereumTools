@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="SmartContracts\Logic\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>

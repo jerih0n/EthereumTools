@@ -3,10 +3,7 @@ using EthereumStamrtContracts.Logic.Blockchain;
 using EthereumStamrtContracts.Logic.Wallet;
 using Nethereum.Web3.Accounts;
 using EthereumStamrtContracts.Logic.Extensions;
-using Newtonsoft.Json;
-using EthereumStamrtContracts.Logic.SmartContracts;
 using EthereumSmartContracts.App.SmartcontractDb.Service;
-using EthereumSmartContracts.App.SmartcontractDb;
 using EthereumSmartContracts.App.UserInterfaceComponents;
 
 namespace EthereumSmartContracts.App
@@ -18,7 +15,7 @@ namespace EthereumSmartContracts.App
         private string _selectedAddress = string.Empty;
         private string _ethBalancePattern = "Balance: {0} ETH";
         private Account _account;
-        private SmartContractBuildJson _newSmartContractBuildJson;
+        private string _newSmartContractBuildJson = string.Empty;
         private readonly SmartContractDbService _smartContractDbService;
 
         public Main()
@@ -55,7 +52,6 @@ namespace EthereumSmartContracts.App
             _newSmartContractBuildJson = null;
             string filePath = string.Empty;
             string fileContent = string.Empty;
-            SmartContractBuildJson smartContractAbiBuildAsJson;
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -77,23 +73,22 @@ namespace EthereumSmartContracts.App
                         fileContent = reader.ReadToEnd();
                     }
 
-                    _newSmartContractBuildJson = JsonConvert.DeserializeObject<SmartContractBuildJson>(fileContent);
+                    _newSmartContractBuildJson = fileContent;
                 }
             }
         }
 
         private void addNewContractBtn_Click(object sender, EventArgs e)
         {
-            if (_newSmartContractBuildJson != null && !string.IsNullOrEmpty(this.contractAddress.Text))
+            if (!string.IsNullOrEmpty(_newSmartContractBuildJson))
             {
-                var newContractRecord = new SmartContractModel()
+                var address = this.contractAddress.Text;
+                if (_hdWallet.IsAddress(address))
                 {
-                    Abi = _newSmartContractBuildJson.Abi,
-                    ContractAddress = this.contractAddress.Text,
-                    ContractName = _newSmartContractBuildJson.ContractName,
-                    ByteCode = _newSmartContractBuildJson.ByteCode,
-                };
-                _smartContractDbService.AddNewSmartContract(newContractRecord);
+                    _smartContractDbService.AddNewSmartContract(_newSmartContractBuildJson, address);
+                    return;
+                }
+                MessageBox.Show("Invalid Address");
             }
             else
             {
@@ -119,12 +114,11 @@ namespace EthereumSmartContracts.App
                 var rowId = e.RowIndex;
 
                 var selectedSmartContract = _smartContractDbService.Data.SmartContracts[rowId];
-                var contractAbi = JsonConvert.SerializeObject(selectedSmartContract.Abi, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
                 foreach (var abiObj in selectedSmartContract.Abi)
                 {
                     var functionCall = new SmartcontractMethodCall(abiObj,
-                        contractAbi,
+                        selectedSmartContract.Abi,
                         selectedSmartContract.ContractAddress,
                         _blockchainConnector);
 

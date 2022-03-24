@@ -8,7 +8,7 @@ namespace EthereumSmartContracts.App.SmartcontractDb
 
         public string ContractAddress { get; set; }
 
-        public List<AbiObject> Abi { get; set; }
+        public List<dynamic> Abi { get; set; }
 
         public string ByteCode { get; set; }
     }

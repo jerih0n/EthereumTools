@@ -2,16 +2,13 @@
 
 namespace EthereumStamrtContracts.Logic.SmartContracts
 {
-    public class AbiObject
+    public class AbiObject<TInput>
     {
         [JsonProperty("anonymous")]
         public bool? Anonymous { get; set; }
 
         [JsonProperty("inputs")]
-        public List<AbiImputs> Inputs { get; set; } = new List<AbiImputs>();
-
-        [JsonProperty("inputs")]
-        public List<AbiInputsWithComponents> InputsWithComponents { get; set; } = new List<AbiInputsWithComponents>();
+        public List<TInput> Inputs { get; set; } = new List<TInput>();
 
         [JsonProperty("stateMutability")]
         public string? StateMutability { get; set; }
@@ -26,6 +23,6 @@ namespace EthereumStamrtContracts.Logic.SmartContracts
         public string InternalType { get; set; }
 
         [JsonProperty("outputs")]
-        public List<AbiAuthputs> Outputs { get; set; } = new List<AbiAuthputs>();
+        public List<AbiOuthputs> Outputs { get; set; } = new List<AbiOuthputs>();
     }
 }

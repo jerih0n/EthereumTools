@@ -1,11 +1,14 @@
 ﻿using NBitcoin;
 using Nethereum.Web3.Accounts;
+using System.Text.RegularExpressions;
 
 namespace EthereumStamrtContracts.Logic.Wallet
 {
     public class HDWallet
     {
+        private const string VALID_ADDRESS_REGEX = "^0x[a-fA-F0-9]{40}$";
         private int _addressIndex = 0;
+
         private readonly Nethereum.HdWallet.Wallet _wallet;
 
         public HDWallet(string mnemonic)
@@ -24,6 +27,9 @@ namespace EthereumStamrtContracts.Logic.Wallet
             _addressIndex = addressIndex;
             return _wallet.GetAccount(addressIndex);
         }
+
+        public bool IsAddress(string address)
+            => Regex.IsMatch(address, VALID_ADDRESS_REGEX);
 
         public string FirstAddress { get; }
         public Account Account { get; }
