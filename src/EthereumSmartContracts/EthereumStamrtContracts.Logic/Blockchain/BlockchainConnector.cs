@@ -38,6 +38,7 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             try
             {
                 var contract = _web3.Eth.GetContract(abi, contractAddress);
+                //
                 var function = contract.GetFunction(functionName);
                 var txas = await function.CallAsync<object>(functionInput);
 
