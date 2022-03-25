@@ -6,5 +6,6 @@
         public int Port { get; set; }
         public int NetworkId { get; set; }
         public string WebsocketUrl { get; set; } = string.Empty;
+        public long GassPrice { get; set; }
     }
 }

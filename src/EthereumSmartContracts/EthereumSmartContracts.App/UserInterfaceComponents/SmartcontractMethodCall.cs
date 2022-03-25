@@ -1,5 +1,6 @@
 ﻿using EthereumStamrtContracts.Logic.Blockchain;
 using EthereumStamrtContracts.Logic.SmartContracts;
+using EthereumStamrtContracts.Logic.Utils;
 using Newtonsoft.Json;
 
 namespace EthereumSmartContracts.App.UserInterfaceComponents
@@ -35,11 +36,12 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         #endregion Constants
 
         private bool _shouldDisplay = false;
-        private bool _triggersTransaction = false;
+        private FunctionTypesEnum _functionType;
         private readonly dynamic _fullContractAbi;
         private readonly string _address;
         private readonly BlockchainConnector _blockchainConnector;
         private readonly AbiObject<AbiOuthputs> _abiInputs;
+        private readonly List<string> _inputParametersTypes;
 
         public SmartcontractMethodCall(dynamic abi, dynamic fullContractAbi, string address, BlockchainConnector blockchainConnector)
         {
@@ -50,6 +52,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             Name = Guid.NewGuid().ToString();
             this.result.Text = string.Empty;
             _abiInputs = JsonConvert.DeserializeObject<AbiObject<AbiOuthputs>>(JsonConvert.SerializeObject(abi));
+            _inputParametersTypes = new List<string>();
             Initialize();
         }
 
@@ -58,20 +61,18 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
         private async void callFunctionBtn_Click(object sender, EventArgs e)
         {
-            if (!_triggersTransaction)
+            try
             {
-                try
-                {
-                    //TODO
-                    this.result.Text = "Processing...";
-                    var result = await _blockchainConnector.CallNonTransactionResultingFunction(JsonConvert.SerializeObject(_fullContractAbi), _address, this.callFunctionBtn.Text, null);
-                    var resultAsJson = JsonConvert.SerializeObject(result);
-                    this.result.Text = resultAsJson;
-                }
-                catch (Exception ex)
-                {
-                    this.result.Text = $"Finished with Error: {ex.Message}";
-                }
+                //TODO
+                this.result.Text = "Processing...";
+                var inputParametes = CreateFunctionInput();
+                var result = await _blockchainConnector.CallSmartcontractFunction(JsonConvert.SerializeObject(_fullContractAbi), _address, this.callFunctionBtn.Text, _functionType, inputParametes);
+                var resultAsJson = JsonConvert.SerializeObject(result);
+                this.result.Text = resultAsJson;
+            }
+            catch (Exception ex)
+            {
+                this.result.Text = $"Finished with Error: {ex.Message}";
             }
         }
 
@@ -94,14 +95,17 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             switch (_abiInputs.StateMutability)
             {
                 case VIEW:
+                    _functionType = FunctionTypesEnum.ViewAndPure;
                     InitializeViewAndPureFunction();
                     break;
 
                 case PURE:
+                    _functionType = FunctionTypesEnum.ViewAndPure;
                     InitializeViewAndPureFunction();
                     break;
 
                 case NONPAYABLE:
+                    _functionType = FunctionTypesEnum.NonPayable;
                     InitializePayableAndNonPayableFunction(NON_PAYABLE_FUNCTION_COLOR);
                     break;
             }
@@ -118,7 +122,6 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         {
             this.callFunctionBtn.Text = _abiInputs.Name;
             this.callFunctionBtn.BackColor = color;
-            _triggersTransaction = true;
             CreateInput();
         }
 
@@ -133,12 +136,29 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             var parameters = new List<string>();
             foreach (var input in _abiInputs.Inputs)
             {
+                _inputParametersTypes.Add(input.Type);
                 parameters.Add($"{input.Type} {input.Name}");
             }
             this.parameterInputsTxtBox.PlaceholderText = String.Join(", ", parameters);
         }
 
-        //TODO:
-        //MAP INPUTS!
+        public object[] CreateFunctionInput()
+        {
+            if (!_inputParametersTypes.Any())
+            {
+                return null;
+            }
+            var parameters = new object[_inputParametersTypes.Count];
+            var inputedParameters = this.parameterInputsTxtBox.Text.Split(",", StringSplitOptions.RemoveEmptyEntries);
+            if (inputedParameters.Length != parameters.Length)
+            {
+                throw new Exception("Invalid Parameters Inputed. Number of required parameters does not match with entered parameters");
+            }
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                parameters[i] = EthrereumTypesConverterHelper.Convert(_inputParametersTypes[i], inputedParameters[i]);
+            }
+            return parameters;
+        }
     }
 }

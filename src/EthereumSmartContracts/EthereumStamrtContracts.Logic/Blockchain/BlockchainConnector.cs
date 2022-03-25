@@ -1,5 +1,5 @@
 ﻿using EthereumStamrtContracts.Logic.Configuration.Models;
-using Nethereum.Contracts;
+using Nethereum.Hex.HexTypes;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
 using System.Numerics;
@@ -11,14 +11,19 @@ namespace EthereumStamrtContracts.Logic.Blockchain
         private Web3 _web3;
         private readonly string _rpcUrl;
         private readonly int _port;
+        private string _currentSelectedAddress;
+        private readonly HexBigInteger _defaultGassMax;
+        private readonly HexBigInteger _defaultGassForTransaction;
 
         public BlockchainConnector(NetworkConfiguration network, Account account)
+
         {
-            var chainId = network.NetworkId;
             _rpcUrl = network.RPCUrl;
             _port = network.Port;
             _web3 = new Web3(account, $"{NetworkUrl}");
             _web3.TransactionManager.UseLegacyAsDefault = true;
+            _defaultGassMax = new HexBigInteger(new BigInteger(network.GassPrice * 20));
+            _defaultGassForTransaction = new HexBigInteger(new BigInteger(network.GassPrice * 3));
         }
 
         public string NetworkUrl
@@ -28,21 +33,33 @@ namespace EthereumStamrtContracts.Logic.Blockchain
         {
             _web3 = new Web3(account, NetworkUrl);
             _web3.TransactionManager.UseLegacyAsDefault = true;
+            _currentSelectedAddress = account.Address;
         }
 
         public async Task<BigInteger> GetEthBalance(string address)
              => await _web3.Eth.GetBalance.SendRequestAsync(address);
 
-        public async Task<object> CallNonTransactionResultingFunction(string abi, string contractAddress, string functionName, params object[] functionInput)
+        public async Task<object> CallSmartcontractFunction(string abi, string contractAddress, string functionName, FunctionTypesEnum functionType, params object[] functionInput)
         {
             try
             {
                 var contract = _web3.Eth.GetContract(abi, contractAddress);
                 //
                 var function = contract.GetFunction(functionName);
-                var txas = await function.CallAsync<object>(functionInput);
+                switch (functionType)
+                {
+                    case FunctionTypesEnum.ViewAndPure:
+                        return await function.CallAsync<object>(functionInput);
 
-                return txas;
+                    case FunctionTypesEnum.NonPayable:
+                        var gass = await function.EstimateGasAsync(functionInput);
+                        var transactionReciep = await function.SendTransactionAndWaitForReceiptAsync(_currentSelectedAddress, gass, null, null, functionInput);
+                        return null;
+
+                    default:
+                        //TODO:
+                        return null;
+                }
             }
             catch (Exception ex)
             {
