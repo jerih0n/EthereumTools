@@ -30,10 +30,15 @@ namespace EthereumSmartContracts.App
             _blockchainConnector = new BlockchainConnector(networkConfiguration, _account);
             _smartContractDbService = new SmartContractDbService();
 
-            foreach (var address in _hdWallet.Addresses)
+            for (int i = 0; i < _hdWallet.Addresses.Length; i++)
             {
-                this.addressesComboBox.Items.Add(address);
+                this.addressesComboBox.Items.Add(_hdWallet.Addresses[i]);
+                if (i == 0)
+                {
+                    this.addressesComboBox.SelectedIndex = 0;
+                }
             }
+
             InitializeDataGrid();
         }
 
@@ -86,6 +91,7 @@ namespace EthereumSmartContracts.App
                 if (_hdWallet.IsAddress(address))
                 {
                     _smartContractDbService.AddNewSmartContract(_newSmartContractBuildJson, address);
+                    InitializeDataGrid();
                     return;
                 }
                 MessageBox.Show("Invalid Address");
@@ -101,7 +107,7 @@ namespace EthereumSmartContracts.App
             this.smartContractsGrid.Rows.Clear();
             foreach (var smartContract in _smartContractDbService.Data.SmartContracts)
             {
-                this.smartContractsGrid.Rows.Add(smartContract.ContractName, smartContract.ContractAddress, "Select");
+                this.smartContractsGrid.Rows.Add(smartContract.ContractName, smartContract.ContractAddress, "Select", "Delete");
             }
         }
 
@@ -133,6 +139,12 @@ namespace EthereumSmartContracts.App
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void deleteConractsBtn_Click(object sender, EventArgs e)
+        {
+            _smartContractDbService.DeleteAll();
+            InitializeDataGrid();
         }
     }
 }

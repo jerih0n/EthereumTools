@@ -30,15 +30,15 @@
         {
             this.callFunctionBtn = new System.Windows.Forms.Button();
             this.parameterInputsTxtBox = new System.Windows.Forms.TextBox();
-            this.result = new System.Windows.Forms.Label();
+            this.result = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // callFunctionBtn
             // 
-            this.callFunctionBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.callFunctionBtn.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.callFunctionBtn.Location = new System.Drawing.Point(0, 0);
             this.callFunctionBtn.Name = "callFunctionBtn";
-            this.callFunctionBtn.Size = new System.Drawing.Size(216, 29);
+            this.callFunctionBtn.Size = new System.Drawing.Size(238, 29);
             this.callFunctionBtn.TabIndex = 0;
             this.callFunctionBtn.Text = "button1";
             this.callFunctionBtn.UseVisualStyleBackColor = true;
@@ -47,20 +47,23 @@
             // parameterInputsTxtBox
             // 
             this.parameterInputsTxtBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.parameterInputsTxtBox.Location = new System.Drawing.Point(222, 0);
+            this.parameterInputsTxtBox.Location = new System.Drawing.Point(244, 0);
             this.parameterInputsTxtBox.Name = "parameterInputsTxtBox";
             this.parameterInputsTxtBox.Size = new System.Drawing.Size(848, 29);
             this.parameterInputsTxtBox.TabIndex = 1;
             // 
             // result
             // 
-            this.result.AutoSize = true;
-            this.result.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.result.Location = new System.Drawing.Point(3, 32);
+            this.result.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.result.BackColor = System.Drawing.SystemColors.Control;
+            this.result.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.result.Location = new System.Drawing.Point(3, 39);
+            this.result.Multiline = true;
             this.result.Name = "result";
-            this.result.Size = new System.Drawing.Size(38, 15);
+            this.result.Size = new System.Drawing.Size(1046, 23);
             this.result.TabIndex = 2;
-            this.result.Text = "label1";
+            this.result.TabStop = false;
             // 
             // SmartcontractMethodCall
             // 
@@ -70,7 +73,7 @@
             this.Controls.Add(this.parameterInputsTxtBox);
             this.Controls.Add(this.callFunctionBtn);
             this.Name = "SmartcontractMethodCall";
-            this.Size = new System.Drawing.Size(1089, 65);
+            this.Size = new System.Drawing.Size(1105, 65);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -80,6 +83,6 @@
 
         private Button callFunctionBtn;
         private TextBox parameterInputsTxtBox;
-        private Label result;
+        private TextBox result;
     }
 }

@@ -33,6 +33,7 @@
             this.smartcontracMethodsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.deleteConractsBtn = new System.Windows.Forms.Button();
             this.addNewContractBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.contractAddress = new System.Windows.Forms.TextBox();
@@ -40,7 +41,6 @@
             this.smartContractsGrid = new System.Windows.Forms.DataGridView();
             this.ContractName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Select = new System.Windows.Forms.DataGridViewButtonColumn();
             this.mnemonic = new System.Windows.Forms.Panel();
             this.ethBalance = new System.Windows.Forms.Label();
             this.addressesComboBox = new System.Windows.Forms.ComboBox();
@@ -76,12 +76,12 @@
             this.transactionResultTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.transactionResultTextbox.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.transactionResultTextbox.Location = new System.Drawing.Point(731, 282);
+            this.transactionResultTextbox.Location = new System.Drawing.Point(655, 282);
             this.transactionResultTextbox.Multiline = true;
             this.transactionResultTextbox.Name = "transactionResultTextbox";
             this.transactionResultTextbox.ReadOnly = true;
             this.transactionResultTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.transactionResultTextbox.Size = new System.Drawing.Size(444, 212);
+            this.transactionResultTextbox.Size = new System.Drawing.Size(520, 212);
             this.transactionResultTextbox.TabIndex = 1;
             // 
             // smartcontracMethodsPanel
@@ -116,6 +116,7 @@
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.deleteConractsBtn);
             this.panel2.Controls.Add(this.addNewContractBtn);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.contractAddress);
@@ -125,12 +126,25 @@
             this.panel2.Size = new System.Drawing.Size(1166, 29);
             this.panel2.TabIndex = 1;
             // 
+            // deleteConractsBtn
+            // 
+            this.deleteConractsBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deleteConractsBtn.BackColor = System.Drawing.Color.Firebrick;
+            this.deleteConractsBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.deleteConractsBtn.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.deleteConractsBtn.Location = new System.Drawing.Point(1068, 3);
+            this.deleteConractsBtn.Name = "deleteConractsBtn";
+            this.deleteConractsBtn.Size = new System.Drawing.Size(95, 23);
+            this.deleteConractsBtn.TabIndex = 4;
+            this.deleteConractsBtn.Text = "Delete All";
+            this.deleteConractsBtn.UseVisualStyleBackColor = false;
+            this.deleteConractsBtn.Click += new System.EventHandler(this.deleteConractsBtn_Click);
+            // 
             // addNewContractBtn
             // 
-            this.addNewContractBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addNewContractBtn.Location = new System.Drawing.Point(947, 3);
+            this.addNewContractBtn.Location = new System.Drawing.Point(599, 2);
             this.addNewContractBtn.Name = "addNewContractBtn";
-            this.addNewContractBtn.Size = new System.Drawing.Size(216, 23);
+            this.addNewContractBtn.Size = new System.Drawing.Size(118, 23);
             this.addNewContractBtn.TabIndex = 3;
             this.addNewContractBtn.Text = "Save Contract";
             this.addNewContractBtn.UseVisualStyleBackColor = true;
@@ -164,15 +178,15 @@
             // 
             // smartContractsGrid
             // 
+            this.smartContractsGrid.AllowUserToAddRows = false;
             this.smartContractsGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.smartContractsGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.smartContractsGrid.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.smartContractsGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.smartContractsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.smartContractsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ContractName,
-            this.Address,
-            this.Select});
+            this.Address});
             this.smartContractsGrid.Location = new System.Drawing.Point(-3, 57);
             this.smartContractsGrid.Name = "smartContractsGrid";
             this.smartContractsGrid.RowTemplate.Height = 25;
@@ -189,11 +203,6 @@
             // 
             this.Address.HeaderText = "Contract Address";
             this.Address.Name = "Address";
-            // 
-            // Select
-            // 
-            this.Select.HeaderText = "Select";
-            this.Select.Name = "Select";
             // 
             // mnemonic
             // 
@@ -223,7 +232,7 @@
             // 
             // addressesComboBox
             // 
-            this.addressesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.addressesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.addressesComboBox.FormattingEnabled = true;
             this.addressesComboBox.Location = new System.Drawing.Point(679, 6);
             this.addressesComboBox.Name = "addressesComboBox";
@@ -311,10 +320,10 @@
         private TextBox contractAddress;
         private Button uploadABIBtn;
         private DataGridView smartContractsGrid;
-        private DataGridViewTextBoxColumn ContractName;
-        private DataGridViewTextBoxColumn Address;
-        private DataGridViewButtonColumn Select;
         private TableLayoutPanel smartcontracMethodsPanel;
         private TextBox transactionResultTextbox;
+        private DataGridViewTextBoxColumn ContractName;
+        private DataGridViewTextBoxColumn Address;
+        private Button deleteConractsBtn;
     }
 }

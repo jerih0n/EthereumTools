@@ -34,10 +34,19 @@ namespace EthereumSmartContracts.App.SmartcontractDb.Service
             var newDb = new SmartContractsDbModel();
             var dbAsJson = JsonConvert.SerializeObject(newDb);
 
-            using (var sr = new StreamWriter(SAMRT_CONTRACTS_LOCAL_FILE))
+            if (File.Exists(SAMRT_CONTRACTS_LOCAL_FILE))
             {
-                sr.WriteLine(dbAsJson);
+                File.Delete(SAMRT_CONTRACTS_LOCAL_FILE);
+                using (var sr = new StreamWriter(SAMRT_CONTRACTS_LOCAL_FILE))
+                {
+                    sr.WriteLine(dbAsJson);
+                }
             }
+        }
+
+        public void DeleteAll()
+        {
+            InitializeNewDb();
         }
 
         private void SaveChanges()

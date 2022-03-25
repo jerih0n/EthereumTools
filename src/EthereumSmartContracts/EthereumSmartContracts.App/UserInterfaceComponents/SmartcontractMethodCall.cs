@@ -129,7 +129,8 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private void InitializeViewAndPureFunction()
         {
             this.callFunctionBtn.Text = _abiInputs.Name;
-            this.callFunctionBtn.BackColor = Color.Green;
+            this.callFunctionBtn.BackColor = Color.SeaGreen;
+            this.callFunctionBtn.ForeColor = Color.White;
             CreateInput();
         }
 
