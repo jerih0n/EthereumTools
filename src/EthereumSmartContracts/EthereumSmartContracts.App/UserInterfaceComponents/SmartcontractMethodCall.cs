@@ -1,6 +1,7 @@
 ﻿using EthereumStamrtContracts.Logic.Blockchain;
 using EthereumStamrtContracts.Logic.SmartContracts;
 using EthereumStamrtContracts.Logic.Utils;
+using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
 
 namespace EthereumSmartContracts.App.UserInterfaceComponents
@@ -42,8 +43,9 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private readonly BlockchainConnector _blockchainConnector;
         private readonly AbiObject<AbiOuthputs> _abiInputs;
         private readonly List<string> _inputParametersTypes;
+        private TextBox _transactionResponseTextBox;
 
-        public SmartcontractMethodCall(dynamic abi, dynamic fullContractAbi, string address, BlockchainConnector blockchainConnector)
+        public SmartcontractMethodCall(dynamic abi, dynamic fullContractAbi, string address, BlockchainConnector blockchainConnector, TextBox transactionResponseTextBox)
         {
             InitializeComponent();
             _fullContractAbi = fullContractAbi;
@@ -53,6 +55,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             this.result.Text = string.Empty;
             _abiInputs = JsonConvert.DeserializeObject<AbiObject<AbiOuthputs>>(JsonConvert.SerializeObject(abi));
             _inputParametersTypes = new List<string>();
+            _transactionResponseTextBox = transactionResponseTextBox;
             Initialize();
         }
 
@@ -63,10 +66,22 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         {
             try
             {
-                //TODO
+                _transactionResponseTextBox.Text = string.Empty;
                 this.result.Text = "Processing...";
                 var inputParametes = CreateFunctionInput();
-                var result = await _blockchainConnector.CallSmartcontractFunction(JsonConvert.SerializeObject(_fullContractAbi), _address, this.callFunctionBtn.Text, _functionType, inputParametes);
+
+                var result = await _blockchainConnector.CallSmartcontractFunction(
+                    JsonConvert.SerializeObject(_fullContractAbi),
+                    _address, this.callFunctionBtn.Text,
+                    _functionType,
+                    inputParametes);
+
+                if (_functionType != FunctionTypesEnum.ViewAndPure)
+                {
+                    ExtractTransactionOutput(result);
+                    this.result.Text = "Success!";
+                    return;
+                }
                 var resultAsJson = JsonConvert.SerializeObject(result);
                 this.result.Text = resultAsJson;
             }
@@ -159,6 +174,18 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
                 parameters[i] = EthrereumTypesConverterHelper.Convert(_inputParametersTypes[i], inputedParameters[i]);
             }
             return parameters;
+        }
+
+        private void ExtractTransactionOutput(object result)
+        {
+            var transactionOutput = result as TransactionReceipt;
+            if (transactionOutput == null)
+            {
+                return;
+            }
+            var transactionInformationModel = new TransactionInformationModel(transactionOutput);
+            var transactionInfo = JsonConvert.SerializeObject(transactionInformationModel, Formatting.Indented);
+            this._transactionResponseTextBox.Text = transactionInfo;
         }
     }
 }

@@ -120,7 +120,8 @@ namespace EthereumSmartContracts.App
                     var functionCall = new SmartcontractMethodCall(abiObj,
                         selectedSmartContract.Abi,
                         selectedSmartContract.ContractAddress,
-                        _blockchainConnector);
+                        _blockchainConnector,
+                        this.transactionResultTextbox);
 
                     if (functionCall.ShouldDisplay)
                     {

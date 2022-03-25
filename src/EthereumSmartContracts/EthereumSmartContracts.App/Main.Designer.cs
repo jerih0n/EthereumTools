@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.transactionResultTextbox = new System.Windows.Forms.TextBox();
             this.smartcontracMethodsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -61,6 +62,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.transactionResultTextbox);
             this.panel1.Controls.Add(this.smartcontracMethodsPanel);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.mnemonic);
@@ -68,6 +70,19 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1187, 509);
             this.panel1.TabIndex = 0;
+            // 
+            // transactionResultTextbox
+            // 
+            this.transactionResultTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.transactionResultTextbox.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.transactionResultTextbox.Location = new System.Drawing.Point(731, 282);
+            this.transactionResultTextbox.Multiline = true;
+            this.transactionResultTextbox.Name = "transactionResultTextbox";
+            this.transactionResultTextbox.ReadOnly = true;
+            this.transactionResultTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.transactionResultTextbox.Size = new System.Drawing.Size(444, 212);
+            this.transactionResultTextbox.TabIndex = 1;
             // 
             // smartcontracMethodsPanel
             // 
@@ -81,7 +96,7 @@
             this.smartcontracMethodsPanel.Name = "smartcontracMethodsPanel";
             this.smartcontracMethodsPanel.RowCount = 1;
             this.smartcontracMethodsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.smartcontracMethodsPanel.Size = new System.Drawing.Size(1169, 212);
+            this.smartcontracMethodsPanel.Size = new System.Drawing.Size(588, 212);
             this.smartcontracMethodsPanel.TabIndex = 2;
             // 
             // groupBox1
@@ -268,6 +283,7 @@
             this.Name = "Main";
             this.Text = "Ethereum Smart Contracts";
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -299,5 +315,6 @@
         private DataGridViewTextBoxColumn Address;
         private DataGridViewButtonColumn Select;
         private TableLayoutPanel smartcontracMethodsPanel;
+        private TextBox transactionResultTextbox;
     }
 }

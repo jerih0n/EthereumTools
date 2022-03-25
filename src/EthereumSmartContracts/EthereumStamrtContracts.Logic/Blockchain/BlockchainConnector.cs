@@ -39,13 +39,18 @@ namespace EthereumStamrtContracts.Logic.Blockchain
         public async Task<BigInteger> GetEthBalance(string address)
              => await _web3.Eth.GetBalance.SendRequestAsync(address);
 
-        public async Task<object> CallSmartcontractFunction(string abi, string contractAddress, string functionName, FunctionTypesEnum functionType, params object[] functionInput)
+        public async Task<object> CallSmartcontractFunction(string abi,
+            string contractAddress,
+            string functionName,
+            FunctionTypesEnum functionType,
+            params object[] functionInput)
         {
             try
             {
                 var contract = _web3.Eth.GetContract(abi, contractAddress);
-                //
+
                 var function = contract.GetFunction(functionName);
+
                 switch (functionType)
                 {
                     case FunctionTypesEnum.ViewAndPure:
@@ -54,7 +59,7 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                     case FunctionTypesEnum.NonPayable:
                         var gass = await function.EstimateGasAsync(functionInput);
                         var transactionReciep = await function.SendTransactionAndWaitForReceiptAsync(_currentSelectedAddress, gass, null, null, functionInput);
-                        return null;
+                        return transactionReciep;
 
                     default:
                         //TODO:
