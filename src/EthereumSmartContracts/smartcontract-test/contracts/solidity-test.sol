@@ -9,6 +9,7 @@ contract SolidityTest {
     struct TestStruct {
         address _address;
         uint256 _number;
+        bytes32 _id;
     }
 
     constructor() {
@@ -16,8 +17,20 @@ contract SolidityTest {
         _arrayWithUint256.push(1);
         _arrayWithUint256.push(2);
         _arrayWithUint256.push(3);
-        _testStructArray.push(TestStruct(msg.sender, 10 * 10**18));
-        _testStructArray.push(TestStruct(msg.sender, 10 * 10**18));
+        _testStructArray.push(
+            TestStruct(
+                msg.sender,
+                10 * 10**18,
+                keccak256(abi.encode(address(0)))
+            )
+        );
+        _testStructArray.push(
+            TestStruct(
+                msg.sender,
+                10 * 10**18,
+                keccak256(abi.encode(address(0)))
+            )
+        );
     }
 
     uint256 public Counter;
@@ -54,7 +67,9 @@ contract SolidityTest {
         Counter += 1;
     }
 
-    function getBoolValue(bool _bool) public returns (bool) {}
+    function getBoolValue(bool _bool) public pure returns (bool) {
+        return _bool;
+    }
 
     function getArrayOfUint256()
         public
@@ -88,12 +103,12 @@ contract SolidityTest {
         return _struct;
     }
 
-    function getArrayOfSctructs(TestStruct[] calldata _structArray)
+    function getArrayOfSctructs()
         public
-        pure
+        view
         returns (TestStruct[] memory _structResponse)
     {
-        return _structArray;
+        return _testStructArray;
     }
 
     function getStringAsRespone() public pure returns (string memory) {
