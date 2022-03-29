@@ -106,11 +106,12 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
                     this.result.Text = "Success!";
                     return;
                 }
-                var resultAsJson = (string)JsonConvert.SerializeObject(result, Formatting.Indented);
+                var resultAsJson = (string)JsonConvert.SerializeObject(result);
                 if (resultAsJson.Length > MAX_STRING_LENGHT_FOR_LABLE_OUTPUT)
                 {
                     this.result.Text = "Success!";
-                    this._transactionResponseTextBox.Text = resultAsJson;
+                    var resultAsPrettyJson = (string)JsonConvert.SerializeObject(result, Formatting.Indented);
+                    this._transactionResponseTextBox.Text = resultAsPrettyJson;
                     return;
                 }
                 this.result.Text = resultAsJson;
