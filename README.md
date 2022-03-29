@@ -1,10 +1,10 @@
 # EthereumTools
 
-#Smar Contract Tool
+# Smar Contract Tool
 
 The goal of this tool is to aid in the development and testing of smart contracts by adding the ability to read already deployed EVM smart contract ABI and generate a Remix IDE-like UI for interacting with their public/external functions.This tool was developed with C# and Windows Forms as a desktop application. It works best with the Truffle + Ganache development environment.
 
-# Required .NET 6
+Required .NET 6
 
 # How to use
 
