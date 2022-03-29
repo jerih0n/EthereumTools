@@ -42,7 +42,7 @@ contract SolidityTest {
         return address(_owner).balance;
     }
 
-    function retunrKeccak256(string memory input)
+    function returnKeccak256(string memory input)
         public
         pure
         returns (bytes32)

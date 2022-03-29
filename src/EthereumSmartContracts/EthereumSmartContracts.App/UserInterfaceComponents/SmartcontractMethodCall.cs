@@ -1,8 +1,10 @@
 ﻿using EthereumStamrtContracts.Logic.Blockchain;
 using EthereumStamrtContracts.Logic.SmartContracts;
 using EthereumStamrtContracts.Logic.Utils;
+using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
+using System.Numerics;
 
 namespace EthereumSmartContracts.App.UserInterfaceComponents
 {
@@ -30,7 +32,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private const string VIEW = "view";
         private const string NONPAYABLE = "nonpayable";
         private const string PURE = "pure";
-        private const string PAYABLE = "payeble";
+        private const string PAYABLE = "payable";
 
         #endregion StateMutabilityContant
 
@@ -47,6 +49,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private readonly AbiObject<AbiFieldsWithComponents> _abiInputssWithComponents;
         private readonly List<string> _inputParametersTypes = new List<string>();
         private readonly bool _isMultipleOutputs;
+        private HexBigInteger? _ethAmountToSend = null;
         private TextBox _transactionResponseTextBox;
 
         public SmartcontractMethodCall(dynamic abi, dynamic fullContractAbi, string address, BlockchainConnector blockchainConnector, TextBox transactionResponseTextBox)
@@ -58,7 +61,6 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             _transactionResponseTextBox = transactionResponseTextBox;
             Name = Guid.NewGuid().ToString();
             this.result.Text = string.Empty;
-
             var abiAsJson = JsonConvert.SerializeObject(abi);
             _abiInputssWithComponents = JsonConvert.DeserializeObject<AbiObject<AbiFieldsWithComponents>>(abiAsJson);
             if (_abiInputssWithComponents.Inputs.Any(x => x.Components != null && x.Components.Any()))
@@ -81,12 +83,21 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
                 _transactionResponseTextBox.Text = string.Empty;
                 this.result.Text = "Processing...";
                 var inputParametes = CreateFunctionInput();
-
+                if (_functionType == FunctionTypesEnum.Payable)
+                {
+                    var inputedParameters = GetInputedParameters();
+                    if (inputedParameters.Length != 1)
+                    {
+                        throw new Exception("Invalid parameters. Should have only one input parameter");
+                    }
+                    _ethAmountToSend = new HexBigInteger(BigInteger.Parse(inputedParameters[0]));
+                }
                 var result = await _blockchainConnector.CallSmartcontractFunction(
                     JsonConvert.SerializeObject(_fullContractAbi),
                     _address, this.callFunctionBtn.Text,
                     _functionType,
                     _isMultipleOutputs,
+                    _ethAmountToSend,
                     inputParametes);
 
                 if (_functionType != FunctionTypesEnum.ViewAndPure)
@@ -140,7 +151,12 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
                 case NONPAYABLE:
                     _functionType = FunctionTypesEnum.NonPayable;
-                    InitializePayableAndNonPayableFunction(NON_PAYABLE_FUNCTION_COLOR);
+                    InitializeNonPayableFunction();
+                    break;
+
+                case PAYABLE:
+                    _functionType = FunctionTypesEnum.Payable;
+                    InitializePayableFunction();
                     break;
             }
         }
@@ -153,11 +169,22 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             CreateInput();
         }
 
-        private void InitializePayableAndNonPayableFunction(Color color)
+        private void InitializeNonPayableFunction()
         {
             this.callFunctionBtn.Text = _abiObject.Name;
-            this.callFunctionBtn.BackColor = color;
+            this.callFunctionBtn.BackColor = Color.Orange;
             CreateInput();
+        }
+
+        private void InitializePayableFunction()
+        {
+            this.callFunctionBtn.Text = _abiObject.Name;
+            this.callFunctionBtn.BackColor = Color.DarkRed;
+            this.callFunctionBtn.ForeColor = Color.White;
+
+            this.parameterInputsTxtBox.Visible = true;
+            this.parameterInputsTxtBox.Enabled = true;
+            this.parameterInputsTxtBox.PlaceholderText = "value in wei";
         }
 
         private void CreateInput()
@@ -184,7 +211,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
                 return null;
             }
             var parameters = new object[_inputParametersTypes.Count];
-            var inputedParameters = this.parameterInputsTxtBox.Text.Split(",", StringSplitOptions.RemoveEmptyEntries);
+            var inputedParameters = GetInputedParameters();
             if (inputedParameters.Length != parameters.Length)
             {
                 throw new Exception("Invalid Parameters Inputed. Number of required parameters does not match with entered parameters");
@@ -219,6 +246,13 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             if (outputs[0].Type.EndsWith("[]")) return true;
 
             return false;
+        }
+
+        private string[] GetInputedParameters()
+        {
+            var inputedParameters = this.parameterInputsTxtBox.Text.Split(",", StringSplitOptions.RemoveEmptyEntries);
+
+            return inputedParameters;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EthereumStamrtContracts.Logic.Configuration.Models;
 using Nethereum.Hex.HexTypes;
+using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
 using System.Numerics;
@@ -44,6 +45,7 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             string functionName,
             FunctionTypesEnum functionType,
             bool multipleOutputs,
+            HexBigInteger? ethAmountToSend,
             params object[] functionInput)
         {
             try
@@ -51,7 +53,6 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                 var contract = _web3.Eth.GetContract(abi, contractAddress);
 
                 var function = contract.GetFunction(functionName);
-
                 switch (functionType)
                 {
                     case FunctionTypesEnum.ViewAndPure:
@@ -66,9 +67,15 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                         var transactionReciep = await function.SendTransactionAndWaitForReceiptAsync(_currentSelectedAddress, gass, null, null, functionInput);
                         return transactionReciep;
 
+                    case FunctionTypesEnum.Payable:
+                        gass = await function.EstimateGasAsync(functionInput);
+                        if (ethAmountToSend == null) ethAmountToSend = new HexBigInteger(0);
+                        gass.Value *= 2;
+                        transactionReciep = await function.SendTransactionAndWaitForReceiptAsync(_currentSelectedAddress, gass, ethAmountToSend, null, functionInput);
+                        return transactionReciep;
+
                     default:
-                        //TODO:
-                        return null;
+                        throw new NotImplementedException();
                 }
             }
             catch (Exception ex)

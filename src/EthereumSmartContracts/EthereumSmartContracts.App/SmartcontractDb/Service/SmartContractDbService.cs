@@ -41,6 +41,11 @@ namespace EthereumSmartContracts.App.SmartcontractDb.Service
                 {
                     sr.WriteLine(dbAsJson);
                 }
+                return;
+            }
+            using (var sr = new StreamWriter(SAMRT_CONTRACTS_LOCAL_FILE))
+            {
+                sr.WriteLine(dbAsJson);
             }
         }
 
