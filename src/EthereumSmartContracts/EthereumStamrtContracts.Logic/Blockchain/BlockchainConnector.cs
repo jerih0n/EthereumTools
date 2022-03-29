@@ -1,4 +1,5 @@
 ﻿using EthereumStamrtContracts.Logic.Configuration.Models;
+using EthereumStamrtContracts.Logic.NethereumExtenstions;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
@@ -52,13 +53,14 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             {
                 var contract = _web3.Eth.GetContract(abi, contractAddress);
 
-                var function = contract.GetFunction(functionName);
+                var function = contract.GetExtendedFunction(functionName);
                 switch (functionType)
                 {
                     case FunctionTypesEnum.ViewAndPure:
                         if (multipleOutputs)
                         {
-                            var resultArray = await function.CallAsync<List<object>>(functionInput);
+                            var returnType = new List<object>();
+                            var resultArray = await function.CallWithPredefinedReturnTypeAsync(returnType, functionInput);
                             return resultArray;
                         }
                         var result = await function.CallAsync<object>(functionInput);

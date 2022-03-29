@@ -9,9 +9,11 @@
   <ItemGroup>
     <PackageReference Include="Nethereum.HdWallet" Version="4.2.0" />
     <PackageReference Include="Nethereum.Web3" Version="4.2.0" />
+    <PackageReference Include="System.CodeDom" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Generic\" />
     <Folder Include="SmartContracts\Logic\" />
   </ItemGroup>
 
