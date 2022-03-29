@@ -5,7 +5,7 @@ contract SolidityTest {
     uint256[] private _arrayWithUint256;
 
     TestStruct[] private _testStructArray;
-
+    TestStruct private _testStruct;
     struct TestStruct {
         address _address;
         uint256 _number;
@@ -30,6 +30,11 @@ contract SolidityTest {
                 10 * 10**18,
                 keccak256(abi.encode(address(0)))
             )
+        );
+        _testStruct = TestStruct(
+            msg.sender,
+            10 * 10**18,
+            keccak256(abi.encode(address(0)))
         );
     }
 
@@ -87,7 +92,7 @@ contract SolidityTest {
         return _testStructArray;
     }
 
-    function gerArrayAsInput(uint256[] calldata _arrayInput)
+    function getArrayAsInput(uint256[] calldata _arrayInput)
         public
         pure
         returns (uint256[] memory _arrayResponse)
@@ -111,7 +116,7 @@ contract SolidityTest {
         return _testStructArray;
     }
 
-    function getStringAsRespone() public pure returns (string memory) {
+    function getStringAsResponse() public pure returns (string memory) {
         return "Response as String";
     }
 
@@ -121,5 +126,21 @@ contract SolidityTest {
         returns (bytes32 response)
     {
         return _request;
+    }
+
+    function getStruct() public view returns (TestStruct memory testStruct) {
+        return _testStruct;
+    }
+
+    function getMultipleResponses()
+        public
+        view
+        returns (
+            uint256,
+            address,
+            string memory
+        )
+    {
+        return (1000000, msg.sender, "Test String");
     }
 }

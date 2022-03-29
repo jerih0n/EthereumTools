@@ -213,10 +213,6 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             }
             var parameters = new object[_inputParametersTypes.Count];
             var inputedParameters = GetInputedParameters();
-            if (inputedParameters.Length != parameters.Length)
-            {
-                throw new Exception("Invalid Parameters Inputed. Number of required parameters does not match with entered parameters");
-            }
             for (int i = 0; i < parameters.Length; i++)
             {
                 parameters[i] = EthrereumTypesConverterHelper.Convert(_inputParametersTypes[i], inputedParameters[i]);

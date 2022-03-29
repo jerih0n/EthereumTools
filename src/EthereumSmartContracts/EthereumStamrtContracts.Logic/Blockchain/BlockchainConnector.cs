@@ -40,7 +40,7 @@ namespace EthereumStamrtContracts.Logic.Blockchain
         public async Task<BigInteger> GetEthBalance(string address)
              => await _web3.Eth.GetBalance.SendRequestAsync(address);
 
-        public async Task<object> CallSmartcontractFunction(string abi,
+        public async Task<dynamic> CallSmartcontractFunction(string abi,
             string contractAddress,
             string functionName,
             FunctionTypesEnum functionType,
@@ -58,10 +58,10 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                     case FunctionTypesEnum.ViewAndPure:
                         if (multipleOutputs)
                         {
-                            var resultArray = await function.CallAsync<List<object>>(functionInput);
+                            var resultArray = await function.CallAsync<List<dynamic>>(functionInput);
                             return resultArray;
                         }
-                        var result = await function.CallAsync<object>(functionInput);
+                        var result = await function.CallAsync<dynamic>(functionInput);
                         return result;
 
                     case FunctionTypesEnum.NonPayable:
