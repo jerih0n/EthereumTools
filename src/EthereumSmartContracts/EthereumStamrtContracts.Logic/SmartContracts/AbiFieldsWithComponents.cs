@@ -2,9 +2,9 @@
 
 namespace EthereumStamrtContracts.Logic.SmartContracts
 {
-    public class AbiInputsWithComponents
+    public class AbiFieldsWithComponents
     {
         [JsonProperty("components")]
-        public List<AbiInputs> Components { get; set; }
+        public List<AbiFields> Components { get; set; }
     }
 }

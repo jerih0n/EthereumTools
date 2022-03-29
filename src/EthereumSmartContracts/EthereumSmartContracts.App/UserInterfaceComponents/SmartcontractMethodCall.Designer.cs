@@ -40,7 +40,6 @@
             this.callFunctionBtn.Name = "callFunctionBtn";
             this.callFunctionBtn.Size = new System.Drawing.Size(238, 29);
             this.callFunctionBtn.TabIndex = 0;
-            this.callFunctionBtn.Text = "button1";
             this.callFunctionBtn.UseVisualStyleBackColor = true;
             this.callFunctionBtn.Click += new System.EventHandler(this.callFunctionBtn_Click);
             // 

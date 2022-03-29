@@ -47,6 +47,7 @@ namespace EthereumSmartContracts.App.SmartcontractDb.Service
         public void DeleteAll()
         {
             InitializeNewDb();
+            _db = LoadDb();
         }
 
         private void SaveChanges()

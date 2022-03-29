@@ -34,6 +34,8 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
         #endregion StateMutabilityContant
 
+        private const int MAX_STRING_LENGHT_FOR_LABLE_OUTPUT = 60;
+
         #endregion Constants
 
         private bool _shouldDisplay = false;
@@ -41,8 +43,10 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private readonly dynamic _fullContractAbi;
         private readonly string _address;
         private readonly BlockchainConnector _blockchainConnector;
-        private readonly AbiObject<AbiOuthputs> _abiInputs;
-        private readonly List<string> _inputParametersTypes;
+        private readonly AbiObject<AbiFields> _abiObject;
+        private readonly AbiObject<AbiFieldsWithComponents> _abiInputssWithComponents;
+        private readonly List<string> _inputParametersTypes = new List<string>();
+        private readonly bool _isMultipleOutputs;
         private TextBox _transactionResponseTextBox;
 
         public SmartcontractMethodCall(dynamic abi, dynamic fullContractAbi, string address, BlockchainConnector blockchainConnector, TextBox transactionResponseTextBox)
@@ -51,11 +55,19 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             _fullContractAbi = fullContractAbi;
             _address = address;
             _blockchainConnector = blockchainConnector;
+            _transactionResponseTextBox = transactionResponseTextBox;
             Name = Guid.NewGuid().ToString();
             this.result.Text = string.Empty;
-            _abiInputs = JsonConvert.DeserializeObject<AbiObject<AbiOuthputs>>(JsonConvert.SerializeObject(abi));
-            _inputParametersTypes = new List<string>();
-            _transactionResponseTextBox = transactionResponseTextBox;
+
+            var abiAsJson = JsonConvert.SerializeObject(abi);
+            _abiInputssWithComponents = JsonConvert.DeserializeObject<AbiObject<AbiFieldsWithComponents>>(abiAsJson);
+            if (_abiInputssWithComponents.Inputs.Any(x => x.Components != null && x.Components.Any()))
+            {
+                //TODO: handle structs as imputs
+            }
+
+            _abiObject = JsonConvert.DeserializeObject<AbiObject<AbiFields>>(abiAsJson);
+            _isMultipleOutputs = ShouldExpectArrayAsOutput();
             Initialize();
         }
 
@@ -74,6 +86,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
                     JsonConvert.SerializeObject(_fullContractAbi),
                     _address, this.callFunctionBtn.Text,
                     _functionType,
+                    _isMultipleOutputs,
                     inputParametes);
 
                 if (_functionType != FunctionTypesEnum.ViewAndPure)
@@ -82,7 +95,13 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
                     this.result.Text = "Success!";
                     return;
                 }
-                var resultAsJson = JsonConvert.SerializeObject(result);
+                var resultAsJson = (string)JsonConvert.SerializeObject(result, Formatting.Indented);
+                if (resultAsJson.Length > MAX_STRING_LENGHT_FOR_LABLE_OUTPUT)
+                {
+                    this.result.Text = "Success!";
+                    this._transactionResponseTextBox.Text = resultAsJson;
+                    return;
+                }
                 this.result.Text = resultAsJson;
             }
             catch (Exception ex)
@@ -93,7 +112,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
         private void Initialize()
         {
-            switch (_abiInputs.Type)
+            switch (_abiObject.Type)
             {
                 case FUNCTION:
                     InitializeFunction();
@@ -107,7 +126,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private void InitializeFunction()
         {
             _shouldDisplay = true;
-            switch (_abiInputs.StateMutability)
+            switch (_abiObject.StateMutability)
             {
                 case VIEW:
                     _functionType = FunctionTypesEnum.ViewAndPure;
@@ -128,7 +147,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
         private void InitializeViewAndPureFunction()
         {
-            this.callFunctionBtn.Text = _abiInputs.Name;
+            this.callFunctionBtn.Text = _abiObject.Name;
             this.callFunctionBtn.BackColor = Color.SeaGreen;
             this.callFunctionBtn.ForeColor = Color.White;
             CreateInput();
@@ -136,26 +155,26 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
         private void InitializePayableAndNonPayableFunction(Color color)
         {
-            this.callFunctionBtn.Text = _abiInputs.Name;
+            this.callFunctionBtn.Text = _abiObject.Name;
             this.callFunctionBtn.BackColor = color;
             CreateInput();
         }
 
         private void CreateInput()
         {
-            if (_abiInputs == null || _abiInputs.Inputs.Count == 0)
+            if (_abiObject == null || _abiObject.Inputs.Count == 0)
             {
                 this.parameterInputsTxtBox.Visible = false;
                 this.parameterInputsTxtBox.Enabled = false;
                 return;
             }
             var parameters = new List<string>();
-            foreach (var input in _abiInputs.Inputs)
+            foreach (var input in _abiObject.Inputs)
             {
                 _inputParametersTypes.Add(input.Type);
                 parameters.Add($"{input.Type} {input.Name}");
             }
-            this.parameterInputsTxtBox.PlaceholderText = String.Join(", ", parameters);
+            this.parameterInputsTxtBox.PlaceholderText = string.Join(", ", parameters);
         }
 
         public object[] CreateFunctionInput()
@@ -177,7 +196,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             return parameters;
         }
 
-        private void ExtractTransactionOutput(object result)
+        private void ExtractTransactionOutput(dynamic result)
         {
             var transactionOutput = result as TransactionReceipt;
             if (transactionOutput == null)
@@ -187,6 +206,19 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             var transactionInformationModel = new TransactionInformationModel(transactionOutput);
             var transactionInfo = JsonConvert.SerializeObject(transactionInformationModel, Formatting.Indented);
             this._transactionResponseTextBox.Text = transactionInfo;
+        }
+
+        private bool ShouldExpectArrayAsOutput()
+        {
+            var outputs = _abiObject.Outputs;
+            if (outputs.Count == 0) return false;
+            if (_abiObject.Outputs.Count > 1)
+            {
+                return true;
+            }
+            if (outputs[0].Type.EndsWith("[]")) return true;
+
+            return false;
         }
     }
 }
