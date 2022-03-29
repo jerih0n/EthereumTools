@@ -58,10 +58,10 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                     case FunctionTypesEnum.ViewAndPure:
                         if (multipleOutputs)
                         {
-                            var resultArray = await function.CallAsync<List<dynamic>>(functionInput);
+                            var resultArray = await function.CallAsync<List<object>>(functionInput);
                             return resultArray;
                         }
-                        var result = await function.CallAsync<dynamic>(functionInput);
+                        var result = await function.CallAsync<object>(functionInput);
                         return result;
 
                     case FunctionTypesEnum.NonPayable:

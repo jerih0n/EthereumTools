@@ -60,7 +60,7 @@
             this.result.Location = new System.Drawing.Point(3, 39);
             this.result.Multiline = true;
             this.result.Name = "result";
-            this.result.Size = new System.Drawing.Size(1046, 23);
+            this.result.Size = new System.Drawing.Size(1044, 23);
             this.result.TabIndex = 2;
             this.result.TabStop = false;
             // 
@@ -72,7 +72,7 @@
             this.Controls.Add(this.parameterInputsTxtBox);
             this.Controls.Add(this.callFunctionBtn);
             this.Name = "SmartcontractMethodCall";
-            this.Size = new System.Drawing.Size(1105, 65);
+            this.Size = new System.Drawing.Size(1103, 78);
             this.ResumeLayout(false);
             this.PerformLayout();
 

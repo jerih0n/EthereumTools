@@ -141,6 +141,6 @@ contract SolidityTest {
             string memory
         )
     {
-        return (1000000, msg.sender, "Test String");
+        return (100000, msg.sender, "Test String");
     }
 }
