@@ -2,7 +2,7 @@
 
 # Smar Contract Tool
 
-The goal of this tool is to aid in the development and testing of smart contracts by adding the ability to read already deployed EVM smart contract ABI and generate a Remix IDE-like UI for interacting with their public/external functions.This tool was developed with C# and Windows Forms as a desktop application. It works best with the Truffle + Ganache development environment.
+The goal of this tool is to aid in the development and testing of smart contracts by adding the ability to read already deployed EVM smart contract ABI and generate a Remix IDE-like UI for interacting with their public/external functions.This tool was developed with C# and Windows Forms as a desktop application. It works best with the Truffle + Ganache development environment. The application has it's own HD wallet implementation, so you don't need wallets like Metamask for interactions with smart contracts. However, the application does not directly support ETH transfers and double confirmation for initting transactions. If such a method is called , the fees will be automatically paid behind the scenes. 
 
 Required .NET 6
 
