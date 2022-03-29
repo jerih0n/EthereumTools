@@ -50,7 +50,7 @@ Calling functions will send a request to the smart contract and the response wil
 
 An example for calling the balanceOf function of ERC20 standard token: 
 
-![image](https://user-images.githubusercontent.com/17022129/160578745-692309f5-6ce5-46fc-a4a6-f04f18386b63.png)
+![image](https://user-images.githubusercontent.com/17022129/160580228-b4e15b20-dfd0-479c-ad76-018d560600a4.png)
 
 If the request creates a transaction, then the result will be much more detailed and placed in the right part of the application.
 
