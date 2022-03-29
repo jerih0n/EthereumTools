@@ -18,7 +18,8 @@ The first thing is to set the appSetting.json 
 
   
 
-![image](https://user-images.githubusercontent.com/17022129/160569623-5f6906b6-6a4a-4521-8266-6f7549aa3513.png)
+![image](https://user-images.githubusercontent.com/17022129/160575365-dfabea91-1798-4ba8-aa06-974fd4ec2c2c.png)
+
 
 On first start, you should see an empty application.
 
