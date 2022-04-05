@@ -1,6 +1,7 @@
 ﻿using EthereumStamrtContracts.Logic.Configuration.Models;
+using EthereumStamrtContracts.Logic.Utils;
+using Nethereum.ABI.FunctionEncoding;
 using Nethereum.Hex.HexTypes;
-using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
 using System.Numerics;
@@ -45,6 +46,7 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             string functionName,
             FunctionTypesEnum functionType,
             bool multipleOutputs,
+            bool complexOutput,
             HexBigInteger? ethAmountToSend,
             params object[] functionInput)
         {
@@ -58,8 +60,35 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                     case FunctionTypesEnum.ViewAndPure:
                         if (multipleOutputs)
                         {
-                            var resultArray = await function.CallAsync<List<object>>(functionInput);
-                            return resultArray;
+                            if (complexOutput)
+                            {
+                                var smatcontractResponse = await function.CallDecodingToDefaultAsync(functionInput);
+                                if (smatcontractResponse.Count > 1)
+                                {
+                                    return ExtractComplexOutput(smatcontractResponse);
+                                }
+                                if (smatcontractResponse.Count == 1)
+                                {
+                                    return ExtractComplexOutput((IEnumerable<object>)smatcontractResponse[0].Result);
+                                }
+                                return string.Empty;
+                            }
+
+                            return await function.CallAsync<List<object>>(functionInput);
+                        }
+                        //refactor!
+                        if (complexOutput)
+                        {
+                            var smatcontractResponse = await function.CallDecodingToDefaultAsync(functionInput);
+                            if (smatcontractResponse.Count > 1)
+                            {
+                                return ExtractComplexOutput(smatcontractResponse);
+                            }
+                            if (smatcontractResponse.Count == 1)
+                            {
+                                return ExtractComplexOutput((IEnumerable<object>)smatcontractResponse[0].Result);
+                            }
+                            return string.Empty;
                         }
                         var result = await function.CallAsync<object>(functionInput);
                         return result;
@@ -84,6 +113,36 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             {
                 throw ex;
             }
+        }
+
+        //Bad A*s recursion
+
+        //OMG! This will be be better with JavaScript. I can't recognise myself anymore ...
+        public List<string> ExtractComplexOutput(IEnumerable<object> outputs)
+        {
+            List<string> result = new List<string>();
+
+            foreach (var output in outputs)
+            {
+                if (output is IEnumerable<object>)
+                {
+                    result.AddRange(ExtractComplexOutput((IEnumerable<object>)output));
+                    continue;
+                }
+                if (output is ParameterOutput && ((ParameterOutput)output).Result is IEnumerable<object>)
+                {
+                    result.AddRange(ExtractComplexOutput((IEnumerable<object>)((ParameterOutput)output).Result));
+                    continue;
+                }
+                var singleResult = output as ParameterOutput;
+                if (singleResult?.Result is byte[])
+                {
+                    result.Add(((byte[])singleResult.Result).ToHex());
+                    continue;
+                }
+                result.Add(singleResult.Result.ToString());
+            }
+            return result;
         }
     }
 }
