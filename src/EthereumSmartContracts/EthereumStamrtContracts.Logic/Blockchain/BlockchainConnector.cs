@@ -115,6 +115,9 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             }
         }
 
+        //Bad A*s recursion
+
+        //OMG! This will be be better with JavaScript. I can't recognise myself anymore ...
         public List<string> ExtractComplexOutput(IEnumerable<object> outputs)
         {
             List<string> result = new List<string>();
@@ -126,8 +129,13 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                     result.AddRange(ExtractComplexOutput((IEnumerable<object>)output));
                     continue;
                 }
+                if (output is ParameterOutput && ((ParameterOutput)output).Result is IEnumerable<object>)
+                {
+                    result.AddRange(ExtractComplexOutput((IEnumerable<object>)((ParameterOutput)output).Result));
+                    continue;
+                }
                 var singleResult = output as ParameterOutput;
-                if (singleResult.Result is byte[])
+                if (singleResult?.Result is byte[])
                 {
                     result.Add(((byte[])singleResult.Result).ToHex());
                     continue;

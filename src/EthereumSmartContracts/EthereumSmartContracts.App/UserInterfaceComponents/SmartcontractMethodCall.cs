@@ -252,7 +252,14 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         {
             var outputs = _abiObject.Outputs;
             if (outputs.Count == 0) return false;
-            return outputs[0].Type.StartsWith("tuple");
+            if (outputs[0].Type.StartsWith("tuple")) return true;
+            var types = new HashSet<string>();
+            foreach (var output in outputs)
+            {
+                types.Add(output.Type);
+            }
+
+            return types.Count > 1;
         }
 
         private string[] GetInputedParameters()
