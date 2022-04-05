@@ -143,4 +143,16 @@ contract SolidityTest {
     {
         return (100000, msg.sender, "Test String");
     }
+
+    function returnMixedTupple()
+        public
+        view
+        returns (
+            uint256,
+            TestStruct memory,
+            address
+        )
+    {
+        return (2512, _testStruct, _owner);
+    }
 }
