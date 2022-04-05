@@ -1,7 +1,7 @@
 ﻿using EthereumStamrtContracts.Logic.Configuration.Models;
-using EthereumStamrtContracts.Logic.NethereumExtenstions;
+using EthereumStamrtContracts.Logic.Utils;
+using Nethereum.ABI.FunctionEncoding;
 using Nethereum.Hex.HexTypes;
-using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
 using System.Numerics;
@@ -53,15 +53,21 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             {
                 var contract = _web3.Eth.GetContract(abi, contractAddress);
 
-                var function = contract.GetExtendedFunction(functionName);
+                var function = contract.GetFunction(functionName);
                 switch (functionType)
                 {
                     case FunctionTypesEnum.ViewAndPure:
                         if (multipleOutputs)
                         {
-                            var returnType = new List<object>();
-                            var resultArray = await function.CallWithPredefinedReturnTypeAsync(returnType, functionInput);
-                            return resultArray;
+                            var smatcontractResponse = await function.CallDecodingToDefaultAsync(functionInput);
+                            if (smatcontractResponse.Count > 1)
+                            {
+                                return ExtractComplexOutput(smatcontractResponse);
+                            }
+                            if (smatcontractResponse.Count == 1)
+                            {
+                                return ExtractComplexOutput((IEnumerable<object>)smatcontractResponse[0].Result);
+                            }
                         }
                         var result = await function.CallAsync<object>(functionInput);
                         return result;
@@ -86,6 +92,28 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             {
                 throw ex;
             }
+        }
+
+        public List<string> ExtractComplexOutput(IEnumerable<object> outputs)
+        {
+            List<string> result = new List<string>();
+
+            foreach (var output in outputs)
+            {
+                if (output is IEnumerable<object>)
+                {
+                    result.AddRange(ExtractComplexOutput((IEnumerable<object>)output));
+                    continue;
+                }
+                var singleResult = output as ParameterOutput;
+                if (singleResult.Result is byte[])
+                {
+                    result.Add(((byte[])singleResult.Result).ToHex());
+                    continue;
+                }
+                result.Add(singleResult.Result.ToString());
+            }
+            return result;
         }
     }
 }
