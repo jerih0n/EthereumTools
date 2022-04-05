@@ -46,6 +46,7 @@ namespace EthereumStamrtContracts.Logic.Blockchain
             string functionName,
             FunctionTypesEnum functionType,
             bool multipleOutputs,
+            bool complexOutput,
             HexBigInteger? ethAmountToSend,
             params object[] functionInput)
         {
@@ -59,6 +60,25 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                     case FunctionTypesEnum.ViewAndPure:
                         if (multipleOutputs)
                         {
+                            if (complexOutput)
+                            {
+                                var smatcontractResponse = await function.CallDecodingToDefaultAsync(functionInput);
+                                if (smatcontractResponse.Count > 1)
+                                {
+                                    return ExtractComplexOutput(smatcontractResponse);
+                                }
+                                if (smatcontractResponse.Count == 1)
+                                {
+                                    return ExtractComplexOutput((IEnumerable<object>)smatcontractResponse[0].Result);
+                                }
+                                return string.Empty;
+                            }
+
+                            return await function.CallAsync<List<object>>(functionInput);
+                        }
+                        //refactor!
+                        if (complexOutput)
+                        {
                             var smatcontractResponse = await function.CallDecodingToDefaultAsync(functionInput);
                             if (smatcontractResponse.Count > 1)
                             {
@@ -68,6 +88,7 @@ namespace EthereumStamrtContracts.Logic.Blockchain
                             {
                                 return ExtractComplexOutput((IEnumerable<object>)smatcontractResponse[0].Result);
                             }
+                            return string.Empty;
                         }
                         var result = await function.CallAsync<object>(functionInput);
                         return result;

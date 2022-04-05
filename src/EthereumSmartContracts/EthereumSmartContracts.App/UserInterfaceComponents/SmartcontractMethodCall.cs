@@ -49,6 +49,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
         private readonly AbiObject<AbiFieldsWithComponents> _abiInputssWithComponents;
         private readonly List<string> _inputParametersTypes = new List<string>();
         private readonly bool _isMultipleOutputs;
+        private readonly bool _isComplexOutput;
         private HexBigInteger? _ethAmountToSend = null;
         private TextBox _transactionResponseTextBox;
 
@@ -70,6 +71,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
 
             _abiObject = JsonConvert.DeserializeObject<AbiObject<AbiFields>>(abiAsJson);
             _isMultipleOutputs = ShouldExpectArrayAsOutput();
+            _isComplexOutput = IsComplexOutputOutput();
             Initialize();
         }
 
@@ -97,6 +99,7 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
                     _address, this.callFunctionBtn.Text,
                     _functionType,
                     _isMultipleOutputs,
+                    _isComplexOutput,
                     _ethAmountToSend,
                     inputParametes);
 
@@ -243,6 +246,13 @@ namespace EthereumSmartContracts.App.UserInterfaceComponents
             if (outputs[0].Type.EndsWith("[]")) return true;
 
             return false;
+        }
+
+        private bool IsComplexOutputOutput()
+        {
+            var outputs = _abiObject.Outputs;
+            if (outputs.Count == 0) return false;
+            return outputs[0].Type.StartsWith("tuple");
         }
 
         private string[] GetInputedParameters()
