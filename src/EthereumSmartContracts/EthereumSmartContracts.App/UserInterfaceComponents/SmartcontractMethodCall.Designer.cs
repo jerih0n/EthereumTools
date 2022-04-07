@@ -60,6 +60,7 @@
             this.result.Location = new System.Drawing.Point(3, 39);
             this.result.Multiline = true;
             this.result.Name = "result";
+            this.result.ReadOnly = true;
             this.result.Size = new System.Drawing.Size(1044, 23);
             this.result.TabIndex = 2;
             this.result.TabStop = false;
